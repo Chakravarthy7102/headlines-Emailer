@@ -27,13 +27,15 @@ def extract_news(url):
     response = requests.get(url)
     innerContent = response.content
     soup = BeautifulSoup(innerContent, 'html.parser')
-
-    print(soup)
     # interating through the soup according the websites structure and returns a html object as a result
-    # for i, tag in enumerate(soup.find_all('td', attrs={'class': 'title', 'valign': ''})):
-    #     print(i, tag)
+    for i, tag in enumerate(soup.find_all('td', attrs={'class': 'title', 'valign': ''})):
+        cnt += ((str(i+1)+"::"+tag.text+"\n"+"<br/>")
+                if tag.text != 'More' else '')
+
+    return cnt
 
 
 url = "https://news.ycombinator.com/"
 
-extract_news(url)
+cnt = extract_news(url)
+print(cnt)
