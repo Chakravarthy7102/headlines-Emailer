@@ -51,10 +51,10 @@ print('Composing Email...')
 # update your email details
 
 SERVER = 'smtp.gmail.com'  # "your smtp server"
-PORT = 587  # your port number
+PORT = 000  # your port number
 FROM = ''  # "your from email id"
 TO = ''  # "your to email ids"  # can be a list
-PASS = ''  # "your email id's password"
+PASS = '*****'  # "your email id's password"
 
 
 print('Creating the email body')
@@ -74,4 +74,14 @@ msg.attach(MIMEText(content, 'html'))
 
 # starting the server to send the mail to the targeted email
 # a to emails can be bunch
-# server =
+try:
+    server = smtplib.SMTP(SERVER, PORT)
+    server.set_debuglevel(1)  # logs errror msg on to the console
+    server.ehlo()
+    server.login(FROM, PASS)
+    server.sendmail(FROM, TO, msg.as_string())
+    print("Email sent Succesfully")
+
+
+finally:
+    server.quit()
