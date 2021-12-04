@@ -2,7 +2,9 @@
 import requests
 # for webscrapping
 from bs4 import BeautifulSoup
+
 # send emails with smtp.lib
+# starts the smtp server that sends emails to targetted emails.
 import smtplib
 # for the emails body
 from email.mime.multipart import MIMEMultipart
@@ -37,5 +39,39 @@ def extract_news(url):
 
 url = "https://news.ycombinator.com/"
 
-cnt = extract_news(url)
-print(cnt)
+cntGlobal = extract_news(url)
+content += cntGlobal
+content += '<br>---------------<br>'
+content += '<br><br>End Of The Email!'
+
+# lets send the email
+
+print('Composing Email...')
+
+# update your email details
+
+SERVER = 'smtp.gmail.com'  # "your smtp server"
+PORT = 587  # your port number
+FROM = ''  # "your from email id"
+TO = ''  # "your to email ids"  # can be a list
+PASS = ''  # "your email id's password"
+
+
+print('Creating the email body')
+
+msg = MIMEMultipart()
+
+# message header / title
+
+msg['Subject'] = 'Top news Headlines [Auto generated Email---Dont Reply]' + ' ' + \
+    str(currentDate.day) + "-" + \
+    str(currentDate.month)+'-'+str(currentDate.year)
+msg['to'] = TO
+msg['from'] = FROM
+
+# attaching the webscrapped data to the email
+msg.attach(MIMEText(content, 'html'))
+
+# starting the server to send the mail to the targeted email
+# a to emails can be bunch
+# server =
